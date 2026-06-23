@@ -31,7 +31,17 @@ describe("NotificationTable", () => {
 
   it("should display notification records in the table", () => {
     // Arrange
-    render(<NotificationTable />);
+    const mockNotifications = [
+      {
+        type: "Payment Due",
+        message: "Tenant payment due tomorrow",
+        timestamp: "2026-06-23",
+      },
+    ];
+
+    render(
+      <NotificationTable notifications={mockNotifications} />
+    );
 
     // Act
     const paymentNotification = screen.getByText(
@@ -44,7 +54,22 @@ describe("NotificationTable", () => {
 
   it("should display the latest notification at the top of the table", () => {
     // Arrange
-    render(<NotificationTable />);
+    const mockNotifications = [
+      {
+        type: "Payment Due",
+        message: "Tenant payment due tomorrow",
+        timestamp: "2026-06-23",
+      },
+      {
+        type: "Lease Expiry",
+        message: "Lease expires in 7 days",
+        timestamp: "2026-06-22",
+      },
+    ];
+
+    render(
+      <NotificationTable notifications={mockNotifications} />
+    );
 
     // Act
     const rows = screen.getAllByRole("row");
@@ -53,6 +78,12 @@ describe("NotificationTable", () => {
     // Assert
     expect(
       within(firstDataRow).getByText("Payment Due")
+    ).toBeInTheDocument();
+
+    expect(
+      within(firstDataRow).getByText(
+        "Tenant payment due tomorrow"
+      )
     ).toBeInTheDocument();
 
     expect(
