@@ -1,9 +1,14 @@
 function KpiCard({ title, value, subtitle }) {
+  const displayValue = value || "0";
+  const showSubtitle = displayValue !== "0";
+
   return (
     <div>
-      <h3>{title}</h3>
-      <h1>{value}</h1>
-      <small>{subtitle}</small>
+      {title && <h3>{title}</h3>}
+
+      <h1>{displayValue}</h1>
+
+      {showSubtitle && <small>{subtitle}</small>}
     </div>
   );
 }
