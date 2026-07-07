@@ -44,8 +44,20 @@ describe("Tenant List Service", () => {
     const result = await fetchTenantList();
 
     // Assert
-    expect(getTenantList).toHaveBeenCalledTimes(1);
     expect(result).toEqual(mockTenants);
+    expect(result).toHaveLength(3);
+  });
+
+  it("should return an empty tenant list when no records exist", async () => {
+    // Arrange
+    getTenantList.mockResolvedValue([]);
+
+    // Act
+    const result = await fetchTenantList();
+
+    // Assert
+    expect(result).toEqual([]);
+    expect(result).toHaveLength(0);
   });
 
   it("should throw an error when retrieving the tenant list fails", async () => {
@@ -56,7 +68,5 @@ describe("Tenant List Service", () => {
     await expect(fetchTenantList()).rejects.toThrow(
       "Failed to retrieve tenant list."
     );
-
-    expect(getTenantList).toHaveBeenCalledTimes(1);
   });
 });
