@@ -2,9 +2,7 @@ import { fetchDashboardMetrics } from "../../../backend/service/dashboardService
 
 export async function getDashboardMetrics() {
   try {
-    const metrics = await fetchDashboardMetrics();
-
-    return metrics;
+    return await fetchDashboardMetrics();
   } catch (error) {
     throw new Error(error.message);
   }
