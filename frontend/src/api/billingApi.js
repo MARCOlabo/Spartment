@@ -1,12 +1,25 @@
-import { fetchBillingInformation } from "../../../backend/service/billingService.js";
+import axios from "axios";
 
-export async function getBillingInformation() {
+const API_URL =
+  "http://localhost:5000/billing";
+
+
+export async function getBillingData() {
+
   try {
-    const billing =
-      await fetchBillingInformation();
 
-    return billing;
+    const response =
+      await axios.get(API_URL);
+
+
+    return response.data;
+
   } catch (error) {
-    throw new Error(error.message);
+
+    throw new Error(
+      "Failed to retrieve billing information."
+    );
+
   }
+
 }

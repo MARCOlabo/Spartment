@@ -7,6 +7,47 @@ import {
 export const handlers = [
 
   http.get(
+    "http://localhost:5000/billing",
+    () => {
+
+      return HttpResponse.json({
+
+        currentBill: {
+          billingMonth: "May 2026",
+          amount: 1070,
+          dueDate: "May 20, 2026",
+          status: "Pending",
+        },
+
+
+        billingHistory: [
+          {
+            month: "April 2026",
+            amount: 950,
+            status: "Paid",
+          },
+          {
+            month: "March 2026",
+            amount: 900,
+            status: "Paid",
+          },
+        ],
+
+
+        paymentStatus: {
+          status: "Pending",
+          lastPayment: "April 20, 2026",
+          balance: 1070,
+        },
+
+      });
+
+    }
+  ),
+
+
+
+  http.get(
     "http://localhost:5000/analytics",
     () => {
 
@@ -18,11 +59,13 @@ export const handlers = [
 
         occupancyRate: 95,
 
+
         paymentStatus: {
           paid: 20,
           pending: 5,
           overdue: 2,
         },
+
 
         revenueTrend: [
           {
@@ -35,11 +78,10 @@ export const handlers = [
           },
         ],
 
+
         recommendations: [
           {
-            title:
-              "Overdue Payments",
-
+            title: "Overdue Payments",
             message:
               "2 tenants have overdue balances.",
           },
