@@ -73,6 +73,8 @@ export async function createTenantAccount(tenantData) {
   } catch (error) {
     throw new Error(error.message);
   }
+
+  return tenant;
 }
 
 /*

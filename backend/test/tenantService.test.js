@@ -2,7 +2,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("../model/tenantModel.js", () => ({
   getTenants: vi.fn(),
-
   getTenantById: vi.fn(),
 }));
 
@@ -21,9 +20,7 @@ describe("Tenant Service", () => {
   it("should retrieve tenant information successfully", async () => {
     getTenantById.mockResolvedValue({
       id: 1,
-
       fullName: "Juan Dela Cruz",
-
       email: "juan@gmail.com",
     });
 
@@ -36,7 +33,6 @@ describe("Tenant Service", () => {
     getTenants.mockResolvedValue([
       {
         id: 1,
-
         fullName: "Juan Dela Cruz",
       },
     ]);
@@ -50,7 +46,7 @@ describe("Tenant Service", () => {
     getTenants.mockResolvedValue([]);
 
     await expect(findTenantByName("Pedro")).rejects.toThrow(
-      "Tenant not found.",
+      "Tenant not found."
     );
   });
 });
