@@ -1,178 +1,71 @@
-import {
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 
-import {
-  getBillingData,
-} from "../api/billingApi";
+import { getBillingInformation } from "../api/billingApi";
 
+import BillingSummaryCards from "../components/BillingSummaryCards";
+import RentStatementTable from "../components/RentStatementTable";
+import UtilityStatementTable from "../components/UtilityStatementTable";
+
+import Loading from "../components/Loading";
+import ErrorMessage from "../components/ErrorMessage";
+import EmptyState from "../components/EmptyState";
 
 export default function BillingDashboard() {
+  const [billing, setBilling] =
+    useState(null);
 
-  const [
-    billing,
-    setBilling,
-  ] = useState(null);
+  const [loading, setLoading] =
+    useState(true);
 
-  const [
-    error,
-    setError,
-  ] = useState("");
-
+  const [error, setError] =
+    useState("");
 
   useEffect(() => {
-
     async function loadBilling() {
-
       try {
-
         const data =
-          await getBillingData();
+          await getBillingInformation();
 
         setBilling(data);
-
-      } catch(error) {
-
-        setError(
-          error.message
-        );
-
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
-
     }
 
-
     loadBilling();
-
   }, []);
 
-
-
-  if(error) {
-
-    return (
-      <p>
-        {error}
-      </p>
-    );
-
+  if (loading) {
+    return <Loading />;
   }
 
-
-
-  if(!billing) {
-
-    return (
-      <p>
-        Loading...
-      </p>
-    );
-
+  if (error) {
+    return <ErrorMessage />;
   }
 
-
+  if (!billing) {
+    return <EmptyState />;
+  }
 
   return (
-
     <div>
+      <BillingSummaryCards
+        summary={billing.summary}
+      />
 
-      <h1>
-        Billing Dashboard
-      </h1>
-
-
-      <section>
-
-        <h2>
-          Current Bill
-        </h2>
-
-
-        <p>
-          {billing.currentBill.billingMonth}
-        </p>
-
-
-        <p>
-          ₱{billing.currentBill.amount}
-        </p>
-
-
-        <p data-testid="current-bill-status">
-          {billing.currentBill.status}
-        </p>
-
-
-      </section>
-
-
-
-      <section>
-
-        <h2>
-          Billing History
-        </h2>
-
-
-        {
-          billing.billingHistory.map(
-            (item) => (
-
-              <div
-                key={item.month}
-              >
-
-                <p>
-                  {item.month}
-                </p>
-
-
-                <p>
-                  ₱{item.amount}
-                </p>
-
-
-                <p>
-                  {item.status}
-                </p>
-
-
-              </div>
-
-            )
-          )
+      <RentStatementTable
+        rentStatements={
+          billing.rentStatements
         }
+      />
 
-
-      </section>
-
-
-
-      <section>
-
-        <h2>
-          Payment Status
-        </h2>
-
-
-        <p data-testid="payment-status">
-          {billing.paymentStatus.status}
-        </p>
-
-
-        <p>
-          Balance:
-          {" "}
-          ₱{billing.paymentStatus.balance}
-        </p>
-
-
-      </section>
-
-
+      <UtilityStatementTable
+        utilityStatements={
+          billing.utilityStatements
+        }
+      />
     </div>
-
   );
-
 }
